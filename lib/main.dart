@@ -1,70 +1,71 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-main() => runApp(
-      const Directionality(
-        textDirection: TextDirection.ltr,
-        child: Center(child: Counter()),
-      ),
-    );
+main() => runApp(const App());
 
-class Counter extends StatefulWidget {
-  const Counter({super.key});
-
-  @override
-  State<Counter> createState() => _CounterState();
-}
-
-class _CounterState extends State<Counter> {
-  int counter = 0;
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: GestureDetector(onTap: () {
-      setState(() {
-        // Using setState() is required to trigger lifecycle hooks
-        // so the widget will know that it should be updated
-        ++counter;
-      });
-    },
-    child: Container(
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Color(0xFF17A2B8),
-          ),
-          width: 80.0,
-          child: Center(
-            child: Text( // here we print the value of the [counter]
-              '$counter', // to see how it changes
-              style: const TextStyle(fontSize: 30.0),
-            ),
-          ),
-    )));
+    return const MaterialApp(home: LoginExample());
   }
 }
 
-class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({super.key});
+class LoginExample extends StatefulWidget {
+  const LoginExample({super.key});
+
+  @override
+  State<LoginExample> createState() => _LoginExampleState();
+}
+
+class _LoginExampleState extends State<LoginExample> {
+  String username = "";
+  String password = "";
+
+  late TextEditingController _controller;
+  //This controller is used to interact with the text input
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+  //This method initializes the controller with init state when added to widget tree
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+  //Called when widget removed from the widget tree
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: GestureDetector(
-        // just a normal widget
-        onTap: () {
-          // one of the [GestureDetector] properties
-          // This function will be called when child widget is pressed
-          print('You pressed me');
-        },
-        child: Container(
-          // the [Container] will represent our button
-          decoration: const BoxDecoration(
-            // this is how you style the [Container]
-            shape: BoxShape
-                .circle, // change its shape from rectangular to circular
-            color: Color(0xFF17A2B8), // and paint it in blue
-          ),
-          width: 80.0,
-          height: 80.0,
+    return Scaffold(
+      body: Center(
+        child: TextField(
+          controller: _controller,
+          onSubmitted: (String value) async {
+            await showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Thanks!'),
+                  content: Text(
+                      'You typed "$value", which has length ${value.characters.length}.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
         ),
       ),
     );
