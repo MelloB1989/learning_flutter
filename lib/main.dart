@@ -45,28 +45,20 @@ class _LoginExampleState extends State<LoginExample> {
     return Scaffold(
       body: Center(
         child: TextField(
-          controller: _controller,
-          onSubmitted: (String value) async {
-            await showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Thanks!'),
-                  content: Text(
-                      'You typed "$value", which has length ${value.characters.length}.'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.account_box),
+              labelText: 'Password',
+              border: OutlineInputBorder(),
+            ),
+            controller: _controller,
+            onSubmitted: (String value) {
+              setState(() {
+                if (value == "Mellob1989@")
+                  print("correct");
+                else
+                  print("Wrong");
+              });
+            }),
       ),
     );
   }
